@@ -1,0 +1,18 @@
+steps to calculating spin fluctuation sigma:
+--------------------------------------------
+i) calculate non-interacting susceptibility: use skip_epsilon
+ii) calculate inverse epsilon: skip_chi
+iii) convert non-interacting susceptibility to ascii: use jl_readchi.cplx.x
+=> input file is jl_readchi.inp: contains file name (chimat or chi0mat)
+iv) run getqffchi.m to obtain spin susceptibility
+v) convert spin susceptibility to binary using jl_rweps.cplx.x
+=> input file is jl_rweps.inp: needs name of epsmat file from step ii) (epsmat or eps0mat)
+vi) run BerkeleyGW with following replacement: voul(:)=coulfact/(8.0d0 * PI_D)
+Also: zero out exchange contribution in shiftenergies_dyn
+
+steps to calculating spin susceptibility
+
+- get real space density from espresso (convert to ascii)
+- calculate epsilon using BGW + use write_vcoul
+- convert to ascii using epsbinasc.f90
+- extract Gvecs from vcoul and get indx from FFTbox
