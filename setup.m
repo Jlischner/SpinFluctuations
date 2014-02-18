@@ -22,17 +22,19 @@ N=[n1, n2, n3];
 M=[m1, m2, m3] * inverse(diag(S));
 
 r=M*R.';
+tlc = norm(r(1,:)-r(2,:)) *2;
 
-Ms = M;
-for ii=1:3;
-  vec = M(:,ii);
-  vec(vec>0.5) -= 1;
-  Ms(:,ii) = vec;
-endfor;
-rs = Ms*R.';
-absrs = sqrt( sum( rs.^2,2) );
+#Ms = M;
+#for ii=1:3;
+#  vec = M(:,ii);
+#  vec(vec>0.5) -= 1;
+#  Ms(:,ii) = vec;
+#endfor;
+#rs = Ms*R.';
+#absrs = sqrt( sum( rs.^2,2) );
 
 G=2.*pi*N*inverse(R);
 G2=sum(G.^2,2);
 
 global gbl_S = S; 
+global gbl_N = N;

@@ -1,18 +1,27 @@
 steps to calculating spin fluctuation sigma:
 --------------------------------------------
+DFT calculation:
+- get real space density from espresso: iotk convert *.dat *.xml
+
 i) calculate non-interacting susceptibility: use skip_epsilon
 ii) calculate inverse epsilon: skip_chi
 iii) convert non-interacting susceptibility to ascii: use jl_readchi.cplx.x
 => input file is jl_readchi.inp: contains file name (chimat or chi0mat)
 iv) run getqffchi.m to obtain spin susceptibility
+=> need charge density (cd.dat), nmtx.dat, fulleps.dat, gvecs.dat
+=> V_spin in Wdat
 v) convert spin susceptibility to binary using jl_rweps.cplx.x
 => input file is jl_rweps.inp: needs name of epsmat file from step ii) (epsmat or eps0mat)
-vi) run BerkeleyGW with following replacement: voul(:)=coulfact/(8.0d0 * PI_D)
+vi) run BerkeleyGW with following replacement: vcoul(:)=coulfact/(8.0d0 * PI_D)
 Also: zero out exchange contribution in shiftenergies_dyn
+
+to include the core density:
+---------------------------
+i) run opium and plot density (e.g. ./opium Pd.param log all plot den)
+ii) the file Pd.pcc_plt contains core and valence densities
 
 steps to calculating spin susceptibility
 
-- get real space density from espresso (convert to ascii)
+
 - calculate epsilon using BGW + use write_vcoul
-- convert to ascii using epsbinasc.f90
-- extract Gvecs from vcoul and get indx from FFTbox
+
